@@ -9,5 +9,6 @@ class Address(DomainBase):
     complement: str = Field(default=None)
     postal_zone: str
     city: str
+
     state: str
     country: str
