@@ -1,10 +1,21 @@
-from src.domain.customer import Customer
-from src.domain.product import Product
-from src.domain.order import Order, OrderItem, OrderStatus, OrderStatusName
+from src.domains.address import Address
+from src.domains.customer import Customer
+from src.domains.product import Product
+from src.domains.order import Order, OrderItem, OrderStatus, OrderStatusName
 
 
 def test_should_create_order():
-    customer: Customer = Customer(name="Felipe", email="felipe@felipe.com")
+    address: Address = Address(
+        street="Rua Manoel Joaquim",
+        neighborhood="Belos Campos",
+        number=132,
+        postal_zone="59988-000",
+        city="Natal",
+        state="RN",
+        country="Brasil"
+    )
+
+    customer: Customer = Customer(name="Felipe", email="felipe@felipe.com", address=address)
     status: OrderStatus = OrderStatus()
 
     assert status.name == OrderStatusName.ACCOMPLISHED

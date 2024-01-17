@@ -1,5 +1,5 @@
-from src.domain.address import Address
-from src.domain.customer import Customer
+from src.domains.address import Address
+from src.domains.customer import Customer
 
 
 def test_should_create_customer():
