@@ -1,13 +1,38 @@
+from enum import Enum
+from uuid import UUID
 from pydantic import BaseModel, Field
+from src.domain.base import DomainBase
+from src.domain.customer import Customer
+
+
+class OrderStatusName(str, Enum):
+    ACCOMPLISHED = 'realizado'
+    IN_PREPARATION = 'em preparação'
+    SENT = 'enviado'
+    DELIVERED = 'entregue'
+    FINISHED = 'finalizado'
+
 
 class OrderStatus(BaseModel):
-   name: str # realizado, em preparação, enviado, entregue, finalizado
+    name: OrderStatusName = Field(default=OrderStatusName.ACCOMPLISHED)
+
 
 class OrderItem(BaseModel):
-   product_id: int
-   price: float
-   quantity: int
+    product_id: UUID
+    price: float
+    quantity: int
 
-class Order(BaseModel):
-   status: list[OrderStatus] = Field(default=[])
-   items: list[OrderItem] = Field(default=[])
+
+class Order(DomainBase):
+    customer: Customer
+    status: list[OrderStatus] = Field(default=[])
+    items: list[OrderItem] = Field(default=[])
+
+    def add_status(self, status: OrderStatus):
+        self.status.append(status)
+
+    def add_item(self, item: OrderItem):
+        self.items.append(item)
+
+    def total(self):
+        return sum(item.price * item.quantity for item in self.items)
